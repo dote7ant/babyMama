@@ -1,3 +1,13 @@
+<?php
+include('session.php');
+ require_once 'db.php'; 
+ $conn = new mysqli($hn, $un, $pw, $db);
+if ($conn->connect_error) die("Fatal Error");
+
+
+
+
+echo <<<_END
 <!DOCTYPE html>
 <html>
 
@@ -7,7 +17,11 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="home.css">
+<link href="https://hatenantstorageprod.blob.core.windows.net/public-websites/webchat/botchat.css?v=5" rel="stylesheet" />
+<link href="style.css" rel="stylesheet" />
+<script src="https://hatenantstorageprod.blob.core.windows.net/public-websites/webchat/botchat.js?v=5"></script>
+<script src="index.js"></script>
+<link rel="stylesheet" href="stylesheets/home.css">
 </head>
 
 <boby style="color: green;">
@@ -32,13 +46,19 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
        <li><a href="profile.html"><span class="glyphicon glyphicon-user"></span> My profile</a></li>
-      <li><a href="index.html"><span class="glyphicon glyphicon-log-in"></span> Log out</a></li>
+      <li><a href="logout.php"><span class="glyphicon glyphicon-log-in"></span> Log out</a></li>
       </ul>
     </div>
   </div>
 </nav>
 </div>
+<div id="botContainer" ></div>
+<script>chatRequested();</script>
+ 
 </div>
 </body>
 
 </html>
+
+_END;
+?>

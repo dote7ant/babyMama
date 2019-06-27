@@ -1,0 +1,14 @@
+
+#botContainer {
+  float: right;
+  height: 99%;
+  width: 460px;
+  position: relative;
+  display: none;
+  border-width: 2px;
+  border-style: inset;
+}
+
+#botContainer.wc-display {
+  display: block;
+}
