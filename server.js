@@ -1,4 +1,4 @@
-const crypto = require('crypto');
+const crypto = require('crypto');
 const express = require("express");
 const path = require("path");
 const jwt = require("jsonwebtoken");
@@ -17,15 +17,19 @@ app.listen(port, function() {
     console.log("Express server listening on port " + port);
 });
 
-function isUserAuthenticated(){
+function isUserAuthenticated(req) {
     // add here the logic to verify the user is authenticated
     return true;
 }
 
+function isAgentAuthenticated(req) {
+    return Boolean(req.query.agent);
+}
+
 app.get('/chatBot',  function(req, res) {
-    if (!isUserAuthenticated()) {
+    if (!isUserAuthenticated(req)) {
         res.status(403).send();
-        return
+        return;
     }
     const options = {
         method: 'POST',
@@ -50,6 +54,9 @@ app.get('/chatBot',  function(req, res) {
             response['optionalAttributes'] = {age: 33};
             if (req.query.lat && req.query.long)  {
                 response['location'] = {lat: req.query.lat, long: req.query.long};
+            }
+            if (isAgentAuthenticated(req)) {
+                response['isAgent'] = true;
             }
             response['directLineURI'] = process.env.DIRECTLINE_ENDPOINT_URI;
             const jwtToken = jwt.sign(response, process.env.APP_SECRET);
