@@ -4,7 +4,7 @@
 if ($conn->connect_error) die("Fatal Error");
 
 
- if (isset($_POST['id'])   && isset($_POST['Fname']) && isset($_POST['username']) && isset($_POST['pass'])  && isset($_POST['blood'])
+if (isset($_POST['id'])   && isset($_POST['Fname']) && isset($_POST['username']) && isset($_POST['pass'])  && isset($_POST['blood'])
   && isset($_POST['telephone'])  && isset($_POST['email']) && isset($_POST['nok']) && isset($_POST['DOB']) && isset($_POST['dp']))
   {
 $id    = get_post($conn, 'id');
@@ -23,11 +23,11 @@ $query    = "INSERT INTO usermum (Mname, nationalID, username, DOB, pwd, dp, blo
  VALUES ('$name', '$id', '$user ', '$dob', '$pwd', '$dp', '$blood', '$nok', '$email', '$tel', )"; 
 if ($conn->query($query)==TRUE)
 {
-  echo "New record created successfully";
+  header("location: home.php");
 }
 else
 {
-  echo"Error!" .$query. "<br>". $conn->error;
+  header("location: index.php");
 }
 $conn->close();
 }
@@ -77,7 +77,57 @@ echo <<<_END
     border:2px solid black;
 }
 
+#message {
+  display:none;
+  background: #f1f1f1;
+  color: #000;
+  position: relative;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+#message p {
+  padding: 10px 35px;
+  font-size: 18px;
+}.valid {
+  color: green;
+}
+
+.valid:before {
+  position: relative;
+  left: -35px;
+  content: "&#10004;";
+}
+.invalid {
+  color: red;
+}
+
+.invalid:before {
+  position: relative;
+  left: -35px;
+  content: "&#10006;";
+}
+
+#messages {
+  display:none;
+  background: #f1f1f1;
+  color: #000;
+  position: relative;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+#messages p {
+  padding: 10px 35px;
+  font-size: 18px;
+}.valid {
+  color: green;
+}
+
 	</style>
+
+
+
 </head>
 
 <body>
@@ -114,7 +164,7 @@ echo <<<_END
 					<span><i class="fab fa-google-square"></i></span>
 				</div>
 			</div>
-			<div class="card-body">
+      <div class="card-body">
 				<form action="login.php" method="POST">
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
@@ -158,43 +208,57 @@ echo <<<_END
 </div> 
 <div id="DOC">
 <span onclick="document.getElementById('DOC').style.display='none'" class="close" title="Close Modal">&times;</span>
-<form name="myForm" action="doc.php" method="POST">
+<form name="myForm" action="doc.php" method="POST"  onsubmit="return(validateForm());">
 <fieldset>
 <legend style="color: white; text-align: center;" >Register as a Doctor</legend>
 <P style="color: white; text-align: center;">Enter your details here</p>
 <ol style="list-style: none;">
 <li><label for="ID_number:">National ID: </label><input type="text" name="id" id="nationalID"></li><br><p id="idn"> </P>
 <li><label for="Name">NAME: </label> <input type="text" name="Fname" id="Name"></li><br><p id="idfname"> </P>
-<li><label for="empID">Employee ID: </label> <input type="text" name="empID" id="empID"></li><br><p id="idemp"> </P>
-<li><label for="HOS">Hospital name :</label><input type="text" name="hospital"  id="HOS" ></li><br>
-<li><label for="FOS">Field of Specialisation: </label> <input type="text" name="FOS" id="FOS"></li><br>
-<li><label for="phone">PHONE NUMBER: </label><input type="tel" name="telephone" id="phone"></li><br>
-<li><label for="email">EMAIL ADDRESS: </label><input type="email" name="email" id="email"></li><br>
-<li><label for="pwd">password: </label><input type="password" name="pass" id="pwd"></li><br>
+<li><label for="empID">Employee ID: </label> <input type="text" name="empID" id="empID"></li><br><p id="idemp"> </p>
+<li><label for="HOS">Hospital name :</label><input type="text" name="hospital"  id="HOS" ></li><br><p id="hos"> </p>
+<li><label for="FOS">Field of Specialisation: </label> <input type="text" name="FOS" id="FOS"></li><br><p id="fos"> </p>
+<li><label for="phone">PHONE NUMBER: </label><input type="tel" name="telephone" id="phone"></li><br><p id="phone"> </p>
+<li><label for="email">EMAIL ADDRESS: </label><input type="email" name="email" id="email"></li><br><p id="email"> </p>
+<li><label for="pwd">password: </label><input type="password" name="pass" id="pwd" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required></li><br><p id="pass"> </p>
 </ol>
+<div id="message" style="color: white; text-align: center;">
+  <h3>Password must contain the following:</h3>
+  <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+  <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+  <p id="number" class="invalid">A <b>number</b></p>
+  <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+</div> <br>
 <input type="submit" name="submit" id="submit" value="SUBMIT"> &nbsp;&nbsp;<input type="reset" name="reset" id="reset" value="RESET FORM">
 </fieldset>
 </form>
 </div>
 <div id="MOM">
 <span onclick="document.getElementById('MOM').style.display='none'" class="close" title="Close Modal">&times;</span>
-<form name="myForm" action="mom.php" method="POST">
+<form name="myFor" action="mom.php" method="POST"  onsubmit="return(validatemyFor());">
 <fieldset>
 <legend style="color: white; text-align: center;">Register as a Mother</legend>
 <P style="color: white; text-align: center;">Enter your details here</p>
 <ol style="list-style: none;">
-<li><label for="ID_number">National ID: </label><input type="text" name="id" id="nationalID"></li><br><p id="idn"> </P>
-<li><label for="Name">NAME: </label> <input type="text" name="Fname" id="Mname"></li><br><p id="idfname"> </P>
-<li><label for="Username">Username: </label> <input type="text" name="username" id="username" placeholder="Select a username!"></li><br><p id="idemp"> </P>
-<li><label for="pwd">password: </label><input type="password" name="pass" id="pwd"></li><br>
-<li><label for="blood">Blood Group:</label><input type="text" name="blood"  id="bloodG" ></li><br>
-<li><label for="phone">PHONE NUMBER: </label><input type="tel" name="telephone" id="phone"></li><br>
-<li><label for="email">EMAIL ADDRESS: </label><input type="email" name="email" id="email"></li><br>
-<li><label for="nok">tel of Next of Kin:</label><input type="tel" name="nok" id= "nok"></li><br>
-<li><label for="DOB">Date Of Birth:</label><input type="date" name="DOB" id= "DOB" value="2019/03/22"></li><br>
-<li><label for="dp"> UPLOAD profile picture:</label><input type="file" name="dp" id="dp"></li><br>
+<li><label for="ID_number">National ID: </label><input type="text" name="id" id="nationalID"></li><br><p id="idnu"> </P>
+<li><label for="Name">NAME: </label> <input type="text" name="Fname" id="Mname"></li><br><p id="idfnam"> </P>
+<li><label for="Username">Username: </label> <input type="text" name="username" id="username" placeholder="Select a username!"></li><br><p id="iduse"> </P>
+<li><label for="pwd">password: </label><input type="password" name="pass" id="pwd" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required></li><br><p id="idpass"> </p>
+<div id="messages" style="color: white; text-align: center">
+  <h3>Password must contain the following:</h3>
+  <p id="letters" class="invalid">A <b>lowercase</b> letter</p>
+  <p id="capitals" class="invalid">A <b>capital (uppercase)</b> letter</p>
+  <p id="numbers" class="invalid">A <b>number</b></p>
+  <p id="lengths" class="invalid">Minimum <b>8 characters</b></p>
+</div> <br>
+<li><label for="blood">Blood Group:</label><input type="text" name="blood"  id="bloodG" ></li><br><p id="blood"> </p>
+<li><label for="phone">PHONE NUMBER: </label><input type="tel" name="telephone" id="phone"></li><br><p id="pho"> </p>
+<li><label for="email">EMAIL ADDRESS: </label><input type="email" name="email" id="email"></li><br><p id="em"> </p>
+<li><label for="nok">tel of Next of Kin:</label><input type="tel" name="nok" id= "nok"></li><br><p id="idnok"> </p>
+<li><label for="DOB">Date Of Birth:</label><input type="date" name="DOB" id= "DOB" value="2019/03/22"></li><br><p id="do"> </p>
+<li><label for="dp"> UPLOAD profile picture:</label><input type="file" name="dp" id="dp" onchange="checkFiles()" multiple accept='image/*' tabindex="20"></li><br><p id="pic"> </p>
 
-</ol>
+</ol>0
 <input type="submit" name="submit" id="submit" value="SUBMIT"> &nbsp;&nbsp;<input type="reset" name="reset" id="reset" value="RESET FORM">
 </fieldset>
 </form>

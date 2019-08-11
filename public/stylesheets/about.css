@@ -1,0 +1,34 @@
+body{
+    background-color: #003333;
+}
+
+.row
+{
+    background-color: black;
+    text-align: center;
+} 
+ 
+
+p {
+    font-family: 'BrownStd-Light';
+    font-size: 16px;
+    letter-spacing: .02em;
+    text-align: center;
+    line-height: 40px;
+}
+
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+#content
+{
+    text-align: center;  
+    font-family: "PT Serif",Georgia,serif;
+    font-family: Playfair Display;
+    font-style: normal;
+    color: white;
+}
