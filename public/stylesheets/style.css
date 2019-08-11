@@ -1,14 +1,45 @@
 
-#botContainer {
-  float: right;
-  height: 99%;
-  width: 460px;
-  position: relative;
-  display: none;
-  border-width: 2px;
-  border-style: inset;
+
+
+.close {
+  position: absolute;
+  right: 35px;
+  top: 15px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #f1f1f1;
 }
 
-#botContainer.wc-display {
-  display: block;
+.close:hover,
+.close:focus {
+  color: #f44336;
+  cursor: pointer;
+}
+
+
+#webchat
+{
+  display: none;
+  position: fixed;
+  justify-content: center;
+  z-index: 1;
+  left: 20%;
+  top: 45%;
+  width: 60%;
+  height: 50%;
+  background-color:#003333 ;
+  overflow: scroll;
+}
+
+#btnchat
+{
+  border-radius: 8px;
+  background-color: #FFC312;
+  color: white;
+  padding: 14px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 1;
+  top: 70%;
+  left: 50%;
 }
